@@ -22,12 +22,34 @@ const bakedShadow = textureLoader.load("/textures/bakedShadow.jpg");
 bakedShadow.colorSpace = THREE.SRGBColorSpace;
 
 const simpleShadow = textureLoader.load("/textures/simpleShadow.jpg");
-const groundTexture = textureLoader.load(
-  "/textures/VeneerWhiteOakRandomMatched001_COL_2K_METALNESS.png"
+
+const groundColorTexture = textureLoader.load(
+  "./laminate_floor_02_1k/laminate_floor_02_diff_1k.jpg"
 );
-const ballTexture = textureLoader.load(
-  "/textures/SmudgesLarge001_OVERLAY_VAR2_1K.jpg"
+
+const groundARMTexture = textureLoader.load(
+  "./laminate_floor_02_1k/laminate_floor_02_arm_1k.jpg"
 );
+
+const groundNormalTexture = textureLoader.load(
+  "./laminate_floor_02_1k/laminate_floor_02_nor_gl_1k.jpg"
+);
+
+groundColorTexture.colorSpace = THREE.SRGBColorSpace;
+
+const ballColorTexture = textureLoader.load(
+  "./concrete_floor_painted_1k/concrete_floor_painted_diff_1k.jpg"
+);
+
+const ballARMTexture = textureLoader.load(
+  "./concrete_floor_painted_1k/concrete_floor_painted_arm_1k.jpg"
+);
+
+const ballNormalTexture = textureLoader.load(
+  "./concrete_floor_painted_1k/concrete_floor_painted_nor_gl_1k.jpg"
+);
+
+ballColorTexture.colorSpace = THREE.SRGBColorSpace;
 
 /**
  * Lights
@@ -94,9 +116,21 @@ scene.add(pointLightCameraHelper);
 /**
  * Materials
  */
-const material = new THREE.MeshStandardMaterial({ map: ballTexture });
+const material = new THREE.MeshStandardMaterial({
+  map: ballColorTexture,
+  aoMap: ballARMTexture,
+  normalMap: ballNormalTexture,
+  roughnessMap: ballARMTexture,
+  metalnessMap: ballARMTexture,
+});
 const groundMaterial = new THREE.MeshStandardMaterial({
-  map: groundTexture,
+  map: groundColorTexture,
+  aoMap: groundARMTexture,
+  roughnessMap: groundARMTexture,
+  metalnessMap: groundARMTexture,
+  normalMap: groundNormalTexture,
+  aoMapIntensity: 1,
+  normalScale: new THREE.Vector2(0.5, 0.5),
 });
 material.roughness = 0.7;
 gui.add(material, "metalness").min(0).max(1).step(0.001);
